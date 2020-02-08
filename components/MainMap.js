@@ -24,7 +24,7 @@ function MainMap({ currentPosition, gpsTrack }) {
                     href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
                 />
             </Head>
-            <MainMap style={ { height: "500px" } } center={ currentPosition } zoom={ 13 } >
+            <MainMap center={ currentPosition } zoom={ 13 } >
                 <TileLayer
                     attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
