@@ -3,14 +3,15 @@ import MainMap from '../components/MainMap';
 import { useState, useEffect } from 'react';
 
 function Index() {
-    const [currentPosition, setCurrentPosition] = useState(["", ""])
+    const [currentPosition, setCurrentPosition] = useState({})
     const [gpsTrack, setGpsTrack] = useState(null)
     useEffect(() => {
         if ('geolocation' in navigator) {
             navigator.geolocation.watchPosition((pos) => {
-                setCurrentPosition([
-                    pos.coords.latitude, pos.coords.longitude
-                ])
+                setCurrentPosition({
+                    lat: pos.coords.latitude,
+                    lon: pos.coords.longitude
+                })
             })
         }
     }, [])
@@ -18,7 +19,7 @@ function Index() {
         console.log('saveGpsTrack', gpsTrack)
         setGpsTrack(gpsTrack);
     }
-
+    console.log(currentPosition);
     return (
         <div>
             <MainMap currentPosition={ currentPosition } gpsTrack={ gpsTrack } />
