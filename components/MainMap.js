@@ -1,20 +1,42 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
+import { loadDB } from '../lib/db';
 
 function MainMap({ currentPosition, gpsTrack }) {
     const [isBrowser, setIsBrowser] = useState(false);
-    console.log(currentPosition)
+    const [gpsState, setGpsState] = useState([]);
+
     useEffect(() => {
         setIsBrowser(true);
-    })
+        const db = loadDB();
+        db.firestore().collection("gpsTracks")
+      .limit(50)
+      .onSnapshot(snapshot => {
+        let newState = {
+          posts: []
+        };
+
+        snapshot.forEach(function(doc) {
+          newState.posts.push({
+            id: doc.id,
+            post: doc.data()
+          });
+        });
+        setGpsState([newState]);
+
+        })
+      },[]);
+    
+    
+
     if (!isBrowser) {
         return null;
     }
-
     const MainMap = require('react-leaflet').Map;
     const TileLayer = require('react-leaflet').TileLayer;
     const Polyline = require('react-leaflet').Polyline;
 
+    const {track} = gpsState.length > 0 && gpsState[0].posts[0].post;
 
     return (
         <div>
@@ -29,7 +51,7 @@ function MainMap({ currentPosition, gpsTrack }) {
                     attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                { gpsTrack && <Polyline color="red" positions={ gpsTrack } /> }
+                { gpsTrack && <Polyline color="red" positions={ track } /> }
             </MainMap>
         </div>
     )

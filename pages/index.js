@@ -1,6 +1,7 @@
 import TrackLocation from '../components/TrackLocation';
 import MainMap from '../components/MainMap';
 import { useState, useEffect } from 'react';
+import {loadDB} from '../lib/db';
 
 const polylines = [[59.30352639999999, 17.9781632], [59.3035264, 17.9], [59.2, 18]]
 const gpsTrack = [];
@@ -30,5 +31,15 @@ function Index() {
         </div>
     )
 }
+
+// Index.getInitialProps = async () => {
+//     let db = loadDB();
+//     let result = db.collection("gpsTracks").get().then((querySnapshot) => {
+//         querySnapshot.forEach((doc) => {
+//             console.log(`${doc.id} => ${doc.data()}`);
+//         });
+//     });
+//     return result;
+// }
 
 export default Index;
