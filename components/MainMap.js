@@ -2,6 +2,14 @@ import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { loadDB } from '../lib/db';
 
+const reduceTrack = (track) => {
+    return track.reduce((acc, cur) => {
+        acc.push([cur._lat, cur._long])
+        return acc;
+    }, [])
+    
+}
+
 function MainMap({ currentPosition, gpsTrack }) {
     const [isBrowser, setIsBrowser] = useState(false);
     const [gpsState, setGpsState] = useState([]);
@@ -36,7 +44,8 @@ function MainMap({ currentPosition, gpsTrack }) {
     const TileLayer = require('react-leaflet').TileLayer;
     const Polyline = require('react-leaflet').Polyline;
 
-    const {track} = gpsState.length > 0 && gpsState[0].posts[0].post;
+    const {track} = gpsState?.[0]?.posts?.[0]?.post || {};
+    const newTrack = track && reduceTrack(track)
 
     return (
         <div>
@@ -51,7 +60,7 @@ function MainMap({ currentPosition, gpsTrack }) {
                     attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                { gpsTrack && <Polyline color="red" positions={ track } /> }
+                { newTrack && <Polyline color="red" positions={ newTrack } /> }
             </MainMap>
         </div>
     )
