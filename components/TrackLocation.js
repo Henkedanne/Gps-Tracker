@@ -1,26 +1,22 @@
 import { useState } from 'react';
-import {addTrackData} from '../utils/addData';
+import { addTrackData } from '../utils/addData';
 import { loadDB } from '../lib/db';
 
 let intervalID;
 const gpsTrack = [];
 const db = loadDB();
- 
+
 function TrackLocation({ pos, saveGpsTrack }) {
     const [buttonState, setButtonState] = useState(true)
     const handleClick = () => {
         if (!buttonState) {
-            console.log('stop')
-            console.log(intervalID)
             clearInterval(intervalID);
-            console.log(gpsTrack)
             saveGpsTrack(gpsTrack)
 
             addTrackData(db, gpsTrack);
 
             setButtonState(!buttonState);
         } else {
-            console.log('start')
             startTrack(pos)
             setButtonState(!buttonState);
         }
