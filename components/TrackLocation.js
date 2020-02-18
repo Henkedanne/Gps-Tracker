@@ -3,7 +3,7 @@ import { addTrackData } from '../utils/addData';
 import { loadDB } from '../lib/db';
 
 let intervalID;
-const gpsTrack = [];
+let gpsTrack = [];
 const db = loadDB();
 
 function TrackLocation({ pos, saveGpsTrack }) {
@@ -11,10 +11,6 @@ function TrackLocation({ pos, saveGpsTrack }) {
     const handleClick = () => {
         if (!buttonState) {
             clearInterval(intervalID);
-            saveGpsTrack(gpsTrack)
-
-            addTrackData(db, gpsTrack);
-
             setButtonState(!buttonState);
         } else {
             startTrack(pos)
@@ -22,6 +18,13 @@ function TrackLocation({ pos, saveGpsTrack }) {
         }
 
     }
+
+    const handleSaveClick = () => {
+        saveGpsTrack(gpsTrack);
+        addTrackData(db, gpsTrack);
+        gpsTrack = [];
+    }
+
     const startTrack = (pos) => {
         intervalID = setInterval(() => {
             gpsTrack.push(pos);
@@ -31,9 +34,16 @@ function TrackLocation({ pos, saveGpsTrack }) {
     }
 
     return (
-        <button onClick={ () => { handleClick() } }>
-            { buttonState ? 'Start Tracking' : ' Stop Tracking' }
-        </button>
+        <div>
+            <button onClick={ () => { handleClick() } }>
+                { buttonState ? 'Start Tracking' : ' Stop Tracking' }
+            </button>
+
+            { gpsTrack.length > 0 && <button onClick={ () => { handleSaveClick() } }>
+                Save Track
+            </button> }
+
+        </div>
 
     )
 }

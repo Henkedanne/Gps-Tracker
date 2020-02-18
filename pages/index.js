@@ -17,10 +17,12 @@ function Index({ tracks }) {
             })
         }
     }, [])
+
     const saveGpsTrack = (gpsTrack) => {
         console.log('saveGpsTrack', gpsTrack)
         setGpsTrack(gpsTrack);
     }
+
     console.log(currentPosition);
     console.log(tracks, 'tracks from index')
     return (

@@ -8,8 +8,6 @@ function MainMap({ currentPosition, gpsTrack }) {
     const [isBrowser, setIsBrowser] = useState(false);
     const [gpsTrackState, setTrackState] = useState([]);
 
-    // TODO: Kolla om det är bättre att hämta datan innan i app kanske.
-
     useEffect(() => {
         setIsBrowser(true);
     }, []);
